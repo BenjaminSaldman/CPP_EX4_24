@@ -67,6 +67,8 @@ int main()
     s2.takeTest();
     s3.takeTest();
     prof1.gradeTest(s1, 85);
+    s1.appealGrade();
+    prof1.updateGrade(s1, 90);
     prof1.gradeTest(s2, 90);
     prof1.gradeTest(s3, 50);
     prof1.publishGrades(); // should print for example: "Sue: 85, Sam: 90, Sally: 50".
