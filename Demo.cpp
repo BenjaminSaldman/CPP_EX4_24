@@ -1,93 +1,70 @@
-
-
-#include "Person.hpp"
-#include "Professor.hpp"
-#include "TeachingAssistant.hpp"
-#include "Student.hpp"
-#include "Course.hpp"
-
-#include <exception>
-
-using namespace coup;
-
+/**
+ * Demo app for Ex4
+ */
 #include <iostream>
-#include <stdexcept>
+#include <string>
+#include "node.hpp"
+#include "tree.hpp"
+
 using namespace std;
-using namespace university;
 
 int main()
 {
-    Course cpp("C++", 2, 2, 3);
-    Professor prof1(cpp, "John", "Doe", "1234567890");
-    Professor prof2(cpp, "Jane", "Doe", "1234567890");
-    TeachingAssistant ta1(cpp, "Tom", "Doe", "1234567890");
-    TeachingAssistant ta2(cpp, "Tim", "Doe", "1234567890");
-    Student s1(cpp, "Sue", "Doe", "1234567890", 3.5);
-    Student s2(cpp, "Sam", "Doe", "1234567890", 3.5);
-    Student s3(cpp, "Sally", "Doe", "1234567890", 3.5);
 
-    try
-    {
-        Professor prof3(cpp, "John", "Doe", "1234567890");
-    }
-    catch (exception &e)
-    {
-        cout << e.what() << endl; // Only 2 professors allowed in cpp course.
-    }
-    prof1.teach();
-    prof2.teach();
+    Node root_node = Node("root");
+    Tree tree;
+    tree.add_root(root_node);
+    Node n1 = Node(1);
+    Node n2 = Node("n2");
+    Node n3 = Node(12.35);
+    Node n4 = Node(1 / 4);
+    Node n5 = Node("n5");
+    Node n6 = Node("n6");
+    Node n7 = Node("n7");
 
-    ta1.publishAssignment();
-    try
-    {
-        ta2.publishAssignment();
-    }
-    catch (exception &e)
-    {
-        cout << e.what() << endl; // Only 1 TA allowed to publish assignment at a time.
-    }
-    s1.doHomework();
-    try
-    {
-        s1.doHomework();
-    }
-    catch (exception &e)
-    {
-        cout << e.what() << endl; // Student has already done homework.
-    }
-    s2.doHomework();
-    s3.doHomework();
-    ta2.giveGrade(s1, 85);
-    ta2.giveGrade(s2, 90);
-    ta2.giveGrade(s3, 95);
-    ta2.publishGrades(); // should print for example: "Sue: 85, Sam: 90, Sally: 95".
+    tree.add_sub_node(root_node, n1);
+    tree.add_sub_node(root_node, n2);
+    tree.add_sub_node(root_node, n3);
+    tree.add_sub_node(n1, n4);
+    tree.add_sub_node(n1, n5);
+    tree.add_sub_node(n2, n6);
+    tree.add_sub_node(n2, n7);
+    // The tree should look like:
+    /**
+     * root
+     * |__1
+     * |  |__0.25
+     * |  |__n5
+     * |__n2
+     * |  |__n6
+     * |  |__n7
+     * |__12.35
+     */
 
-    prof1.publishTest();
-    s1.takeTest();
-    s2.takeTest();
-    s3.takeTest();
-    prof1.gradeTest(s1, 85);
-    s1.appealGrade();
-    prof1.updateGrade(s1, 90);
-    prof1.gradeTest(s2, 90);
-    prof1.gradeTest(s3, 50);
-    prof1.publishGrades(); // should print for example: "Sue: 85, Sam: 90, Sally: 50".
-    try
+    for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node)
     {
-        prof1.finishCourse();
-    }
-    catch (exception &e)
+        cout << node->get_value() << endl;
+    } // prints: root, 1, 0.25, n5, n2, n6, n7, 12.35
+
+    for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node)
     {
-        cout << e.what() << endl; // Not all students have passed the test.
-    }
-    prof2.publishTest();
-    s1.takeTest();
-    s2.takeTest();
-    s3.takeTest();
-    prof2.gradeTest(s1, 85);
-    prof2.gradeTest(s2, 90);
-    prof2.gradeTest(s3, 95);
-    prof2.publishGrades(); // should print for example: "Sue: 85, Sam: 90, Sally: 95".
-    prof1.finishCourse();
-    return 0;
+        cout << node->get_value() << endl;
+    } // prints: 0.25, n5, 1, n6, n7, n2, 12.35, root
+
+    for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node)
+    {
+        cout << node->get_value() << endl;
+    } // prints: 0.25, 1, n5, root, n6, n2, n7, 12.35
+
+    for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node)
+    {
+        cout << node->get_value() << endl;
+    } // prints: root, 1, n2, 12.35, 0.25, n5, n6, n7
+
+    for (auto node : tree)
+    {
+        cout << node.get_value() << endl;
+    } // same as BFS: root, 1, n2, 12.35, 0.25, n5, n6, n7
+
+    cout << tree; // Should print the graph using GUI.
 }
