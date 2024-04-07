@@ -11,16 +11,16 @@ using namespace std;
 int main()
 {
 
-    Node root_node = Node("root");
+    Node<string> root_node = Node("root");
     Tree tree;
     tree.add_root(root_node);
-    Node n1 = Node(1);
-    Node n2 = Node("n2");
-    Node n3 = Node(12.35);
-    Node n4 = Node(1 / 4);
-    Node n5 = Node("n5");
-    Node n6 = Node("n6");
-    Node n7 = Node("n7");
+    Node<int> n1 = Node(1);
+    Node<string> n2 = Node("n2");
+    Node<double> n3 = Node(12.35);
+    Node<double> n4 = Node(1 / 4);
+    Node<string> n5 = Node("n5");
+    Node<string> n6 = Node("n6");
+    Node<string> n7 = Node("n7");
 
     tree.add_sub_node(root_node, n1);
     tree.add_sub_node(root_node, n2);
